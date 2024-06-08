@@ -127,4 +127,38 @@ const applyDoctorController= async(req, res)=>{
      }
 }
 
-module.exports = {applyDoctorController, loginController, registerController, authController };
+// notification controller function
+const  getAllNotificationController= async(req, res)=>{
+    try {
+      // first get user,  because user have notification
+      const user = await userModel.findOne({_id:req.body.userId})
+     // see notification
+     const  seennotification= user.seennotification 
+    //  get normal notification
+    const notification = user.notification
+    // push 
+    seennotification.push(...notification)
+    // Now target normal notification and make it empty
+    user.notification = []
+    user.seennotification = notification
+    // update user
+    const updatedUser = await user.save()
+    // send response
+    res.status(200).send({
+      success:true,
+      message:'All notification marked as read',
+      // pass data
+      data:updatedUser,
+    })
+    } catch (error) {
+      console.log(error);
+      res.status(500).send({
+        message:'Error in notification',
+        success: false,
+        error
+      })
+      
+    }
+}
+
+module.exports = {applyDoctorController, loginController, registerController, authController, getAllNotificationController };

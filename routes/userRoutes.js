@@ -1,6 +1,6 @@
 const express = require('express')
 const { model } = require('mongoose')
-const { loginController, registerController, authController, applyDoctorController } = require('../controllers/userControllers')
+const { loginController, registerController, authController, applyDoctorController, getAllNotificationController } = require('../controllers/userControllers')
 const authMiddleware = require('../middlewares/authMiddleware')
 
 // here we create router objects
@@ -19,5 +19,9 @@ router.post('/getUserData', authMiddleware, authController)
 
 //Apply doctor and method is post
 router.post('/apply-doctor', authMiddleware, applyDoctorController)
+
+
+//Notification doctor and method is post
+router.post('/get-all-notification', authMiddleware, getAllNotificationController)
 
 module.exports=router
